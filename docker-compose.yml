@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  app:
+    image: diegoavendanio/03utilitypay:v1
+    ports:
+      - "80:80"
