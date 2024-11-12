@@ -2,6 +2,6 @@ version: '3.8'
 
 services:
   app:
-    image: diegoavendanio/03utilitypay:v1
+    image: diegoavendanio/03utilitypay:v3
     ports:
       - "80:80"
