@@ -37,10 +37,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t myapp:${{ github.sha }} .
+          docker build -t utilitypay03:${{ github.sha }} .
 
       - name: Push Docker image
         run: |
-          docker tag myapp:${{ github.sha }} mydockerhubusername/myapp:${{ github.sha }}
-          docker push mydockerhubusername/myapp:${{ github.sha }}
+          docker tag utilitypay03:${{ github.sha }} diegoavendanio/utilitypay03:${{ github.sha }}
+          docker push diegoavendanio/utilitypay03:${{ github.sha }}
 
