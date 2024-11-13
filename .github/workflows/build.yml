@@ -1,10 +1,12 @@
-name: Build
+name: Build and Docker
+
 on:
   push:
     branches:
       - develop
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -18,3 +20,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  docker_build:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: sonarcloud  # Este paso solo se ejecuta si SonarCloud ha sido exitoso
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t myapp:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
+          docker tag myapp:${{ github.sha }} mydockerhubusername/myapp:${{ github.sha }}
+          docker push mydockerhubusername/myapp:${{ github.sha }}
+
